@@ -1,7 +1,11 @@
+# Install Kathara in CentOS
+![sample](image/sample.jpg)
+# Manual
+Manual was written by Vietnamese, you can translate to your language, thanks you <3
 ```bash
 # 17/10/2025 (dd/mm/yyyy)
 # Tổng hợp: d3nhatv0lam
-# Cài Kathara trên CentOS qua Docker và pip3 cho người dùng
+# Cài Kathara trên CentOS qua docker và pip3 cho người dùng
 # Chỉ nên cài vào máy ảo, không khuyến khích thực hiện tại máy thực
 # Môi trường thử nghiệm: Window11, VMware, CentOS-9
 
@@ -17,12 +21,11 @@ $ sudo usermod -aG docker $USER
 # !!!!!!!!!! SAU ĐÓ, HÃY LOG OUT VÀ LOG IN LẠI !!!!!!!!!!
 # Đăng nhập vào docker nếu cần, làm theo hướng dẫn của terminal.
 $ sudo docker login
-
 #### ----- BƯỚC 2: CÀI ĐẶT KATHARA -----
 # Cài pip
 $ sudo dnf install -y python3-pip
 # Cài kathara
-$ PY_MINOR=$(python3 -c 'import sys; print(sys.version_info.minor)'); if [ $PY_MINOR -ge 10 ]; then echo "🔎 Python >= 3.10. Cài đặt Kathara mới nhất..."; pip3 install kathara; else echo "🔎 Python <= 3.9. Cài đặt Kathara tương thích..."; pip3 install "kathara==3.7.3"; fi
+$ PY_MINOR=$(python3 -c 'import sys; print(sys.version_info.minor)'); if [ $PY_MINOR -ge 10 ]; then echo "Python >= 3.10. Cài đặt Kathara mới nhất..."; pip3 install kathara; else echo "Python <= 3.9. Cài đặt Kathara tương thích..."; pip3 install "kathara==3.7.3"; fi
 # Cài đặt Routing cho Kathara
 $ sudo docker pull kathara/quagga
 
@@ -59,7 +62,7 @@ echo "Tìm thấy các container! Bắt đầu mở các console..."
 for id in $CONTAINER_IDS; do
     # Lấy tên của container để hiển thị cho thân thiện
     name=$(docker ps --format "{{.Names}}" --filter "id=$id")
-    echo "🖥️  Đang mở console cho: $name ($id)"
+    echo "Đang mở console cho: $name ($id)"
     
     gnome-terminal -- bash -c "docker exec -it $id bash; exec bash"
 done
