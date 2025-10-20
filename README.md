@@ -1,5 +1,6 @@
 # Install Kathara in CentOS
 ![sample](image/sample.jpg)
+![alt text](image/sample1.png)
 # Manual
 Manual was written by Vietnamese, you can translate to your language, thanks you <3
 ```bash
@@ -7,7 +8,7 @@ Manual was written by Vietnamese, you can translate to your language, thanks you
 # Tổng hợp: d3nhatv0lam
 # Cài Kathara trên CentOS qua docker và pip3 cho người dùng
 # Chỉ nên cài vào máy ảo, không khuyến khích thực hiện tại máy thực
-# Môi trường thử nghiệm: Window11, VMware, CentOS-9
+# Môi trường thử nghiệm: Window11, VMware, CentOS-9 (3 Core, 3GB Ram)
 
 #### ----- BƯỚC 1: CÀI ĐẶT DOCKER -----
 # Phiên bản hoạt động ổn định: Docker 25.0.3-1.el9, kathara==3.7.3, nếu khác phiên bản có thể không chạy
@@ -21,11 +22,21 @@ $ sudo usermod -aG docker $USER
 # !!!!!!!!!! SAU ĐÓ, HÃY LOG OUT VÀ LOG IN LẠI !!!!!!!!!!
 # Đăng nhập vào docker nếu cần, làm theo hướng dẫn của terminal.
 $ sudo docker login
+
+# Khóa phiên bản docker (Update không bị lỗi phiên bản docker)
+$ sudo dnf install -y python3-dnf-plugin-versionlock
+$ sudo dnf versionlock add docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+$ sudo dnf versionlock list
+# Kiểm tra lại nếu đã có docker* thì đã được
+
 #### ----- BƯỚC 2: CÀI ĐẶT KATHARA -----
+# Cài xterm
+$ sudo dnf install xterm -y
 # Cài pip
 $ sudo dnf install -y python3-pip
 # Cài kathara
 $ PY_MINOR=$(python3 -c 'import sys; print(sys.version_info.minor)'); if [ $PY_MINOR -ge 10 ]; then echo "Python >= 3.10. Cài đặt Kathara mới nhất..."; pip3 install kathara; else echo "Python <= 3.9. Cài đặt Kathara tương thích..."; pip3 install "kathara==3.7.3"; fi
+# $ pip3 install "kathara==3.7.3"
 # Cài đặt Routing cho Kathara
 $ sudo docker pull kathara/quagga
 
@@ -39,14 +50,10 @@ $ source ~/.bash_profile
 # Kiểm tra kathara
 $ kathara --version
 $ kathara check
-# Cài xterm
-$ sudo dnf install xterm -y
-# tắt enforce (Hình như không tắt cũng được)
-$ sudo setenforce 0
 
 # Script tự mở các máy tính đã cài đặt
 # Tạo máy không tự mở console đâu, cảm ơn <3
-$ nano docker-connect-all.sh
+$ nano ~/docker-connect-all.sh
 #dán các lệnh bên dưới vào file docker-connect-all.sh
 #---------------------
 #!/bin/bash
@@ -68,12 +75,17 @@ for id in $CONTAINER_IDS; do
 done
 #---------------------
 # Set quyền chạy script
-$ chmod 755 docker-connect-all.sh
+$ chmod 755 ~/docker-connect-all.sh
 
 #### ----- CHẠY THỬ NGHIỆM -----
 # lệnh test
-$ kathara vstart -n pc1 --eth 0:A 
-$ kathara vstart -n pc2 --eth 0:A
-$ kathara vstart -n pc3 --eth 0:A
-$ ./docker-connect-all.sh
+$ kathara vstart -n pc1 --eth 0:A && kathara vstart -n pc2 --eth 0:A
+$ ~/docker-connect-all.sh
+#pc1: 
+$ ifconfig eth0 10.0.0.1/24
+#pc2:
+$ ifconfig eth0 10.0.0.2/24
+$ ping 10.0.0.1
+#Clean all
+$ kathara wipe
 ```
