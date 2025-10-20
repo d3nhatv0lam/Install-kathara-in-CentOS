@@ -1,13 +1,16 @@
 # Install Kathara in CentOS
 ![sample](image/sample.jpg)
 ![alt text](image/sample1.png)
+
+# Purposes
+This manual is used for laboratory work and studying.
 # Manual
 Manual was written by Vietnamese, you can translate to your language, thanks you <3
 ```bash
 # 17/10/2025 (dd/mm/yyyy)
 # Tổng hợp: d3nhatv0lam
 # Cài Kathara trên CentOS qua docker và pip3 cho người dùng
-# Chỉ nên cài vào máy ảo, không khuyến khích thực hiện tại máy thực
+# Chỉ nên cài vào máy ảo trong môi trường thử nghiệm, học tập, chưa có nhiều dữ liệu quan trọng, không khuyến khích thực hiện tại máy thật, máy có nhiều phần mềm tương tự
 # Môi trường thử nghiệm: Window11, VMware, CentOS-9 (3 Core, 3GB Ram)
 
 #### ----- BƯỚC 1: CÀI ĐẶT DOCKER -----
