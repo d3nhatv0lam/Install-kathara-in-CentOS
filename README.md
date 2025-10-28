@@ -1,6 +1,6 @@
 # Install Kathara in CentOS
 ![sample](image/sample.jpg)
-![alt text](image/sample1.png)
+![sample2](image/sample1.png)
 
 # Purposes
 This manual is used for laboratory work and studying.
@@ -57,38 +57,38 @@ $ kathara check
 # Script tự mở các máy tính đã cài đặt
 # Tạo máy không tự mở console đâu, cảm ơn <3
 $ nano ~/docker-connect-all.sh
-#dán các lệnh bên dưới vào file docker-connect-all.sh
+# Dán các lệnh bên dưới vào file docker-connect-all.sh
 #---------------------
 #!/bin/bash
-echo "Đang tìm tất cả các container đang chạy..."
+echo "Đang tìm các container Kathara đang chạy..."
 # Lấy danh sách ID của tất cả các container đang chạy
-CONTAINER_IDS=$(docker ps -q)
+CONTAINER_IDS=$(docker ps -q --filter "name=kathara_")
 # Kiểm tra xem có container nào đang chạy không
 if [ -z "$CONTAINER_IDS" ]; then
-    echo "Không tìm thấy container nào đang chạy."
+    echo "Không tìm thấy container Kathara nào đang chạy."
     exit 1
 fi
-echo "Tìm thấy các container! Bắt đầu mở các console..."
+echo "Tìm thấy các container Kathara! Bắt đầu mở các console..."
 for id in $CONTAINER_IDS; do
-    # Lấy tên của container để hiển thị cho thân thiện
+    # Lấy tên của container dễ đọc
     name=$(docker ps --format "{{.Names}}" --filter "id=$id")
     echo "Đang mở console cho: $name ($id)"
     
-    gnome-terminal -- bash -c "docker exec -it $id bash; exec bash"
+    gnome-terminal -- bash -c "docker exec -it $id bash" #; exec bash
 done
 #---------------------
 # Set quyền chạy script
 $ chmod 755 ~/docker-connect-all.sh
 
 #### ----- CHẠY THỬ NGHIỆM -----
-# lệnh test
+# Lệnh test
 $ kathara vstart -n pc1 --eth 0:A && kathara vstart -n pc2 --eth 0:A
 $ ~/docker-connect-all.sh
-#pc1: 
+# pc1: 
 $ ifconfig eth0 10.0.0.1/24
-#pc2:
+# pc2:
 $ ifconfig eth0 10.0.0.2/24
 $ ping 10.0.0.1
-#Clean all
+# Clean all
 $ kathara wipe
 ```
