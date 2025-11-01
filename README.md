@@ -130,15 +130,19 @@ for id in $CONTAINER_IDS; do
     
     case "$TERMINAL_CMD" in
         gnome-terminal)
-            gnome-terminal -- bash -c "docker exec -it $id bash" &
+            gnome-terminal -- bash -c "docker exec -it $id bash"
             ;;
-        ptyxis)
-            ptyxis -- bash -c "docker exec -it $id bash" &
-            ;;
-        xterm)
-            xterm -e "docker exec -it $id bash" &
+        ptyxis | xterm)
+            if [ "$TERMINAL_CMD" = "ptyxis" ]; then
+                ptyxis -- bash -c "docker exec -it $id bash" &
+            else
+                xterm -e "docker exec -it $id bash" &
+            fi
+            # Thêm "sleep" (chờ/nghỉ) để không bị lag
+            sleep 0.3
             ;;
     esac
+    sleep 0.3
 done
 #---------------------
 # Set quyền chạy script
