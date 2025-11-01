@@ -142,7 +142,6 @@ for id in $CONTAINER_IDS; do
             sleep 0.3
             ;;
     esac
-    sleep 0.3
 done
 #---------------------
 # Set quyền chạy script
